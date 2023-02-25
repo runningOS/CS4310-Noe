@@ -1,3 +1,5 @@
+//By Noe & Tytler
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,17 +8,18 @@
 #include <sys/wait.h>
 #include "Wait.h"
 
-// constructor section
+// constructor
 Wait::Wait(int argc, char **argv) : POSIXApplication(argc, argv){
 	parser().setDescription("Waiting for process to change state");
 	parser().registerPositional("pid", "Wait for process with the given pid");
 }
 
-// destructor section
+// destructor
 Wait::~Wait(){}
 
-// main wait function section
-Wait::Result Wait::exec(){
+// function
+Wait::Result Wait::exec()
+{
 	ProcessID pid = 0;
 
 	if ((pid = atoi(arguments().get("pid"))) <= 0){

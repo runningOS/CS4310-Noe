@@ -1,25 +1,30 @@
+//By Noe & Tyler
+
 #ifndef __BIN_WAIT_WAIT_H
 #define __BIN_WAIT_WAIT_H
 
 #include <POSIXApplication.h>
 
 // wait for process to change state
-
+ 
 class Wait : public POSIXApplication
 {
 	public:
-		//constructor
+		/**  
+		 * constructor
+		 */
 
 		Wait(int argc, char **argv);
+		/*
+		 * destructor
+		 */
 
-		//destructor
 		virtual ~Wait();
-
-        //Execute
 		/*
 		 *  execute
 		 * @return Result code
 		 */
+		
 		virtual Result exec();
 };
 
