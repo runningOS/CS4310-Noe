@@ -31,6 +31,7 @@ Process::Process(ProcessID id, Address entry, bool privileged, const MemoryMap &
     m_waitId        = 0;
     m_waitResult    = 0;
     m_wakeups       = 0;
+    m_priorityLevel = 3; //we set default priority to 3 per instructions
     m_entry         = entry;
     m_privileged    = privileged;
     m_memoryContext = ZERO;
@@ -60,6 +61,16 @@ Process::~Process()
 ProcessID Process::getID() const
 {
     return m_id;
+}
+
+uint Process::getPriority() 
+{
+    return m_priorityLevel;
+}
+
+void Process::setPriority(int p)
+{
+    m_priorityLevel = p;
 }
 
 ProcessID Process::getParent() const

@@ -66,6 +66,9 @@ class ProcessClient
 
         /** Textual state of the process */
         String textState;
+
+        /** Priority Level of the Process*/
+        uint  priorityLevel;
     }
     Info;
 
@@ -84,6 +87,8 @@ class ProcessClient
      * @return Parent Process ID
      */
     ProcessID getParentID() const;
+
+    //processID getPrioity() const;
 
     /**
      * Get process information by its ID.
@@ -120,6 +125,7 @@ class ProcessClient
      *         or ANY if none found.
      */
     ProcessID findProcess(const String program) const;
+    void setPriority(const ProcessID pid, int priority, ProcessClient::Info &info);
 
   private:
 
@@ -128,6 +134,8 @@ class ProcessClient
 
     /** Our parent process identifier */
     static const ProcessID m_parent;
+
+    static const int m_priorityLevel;
 };
 
 /**
