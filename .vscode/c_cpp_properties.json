@@ -4,7 +4,10 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/lib/libapp"
+                "${workspaceFolder}/lib/libapp",
+                "${workspaceFolder}/lib/libposix",
+                "${workspaceFolder}/lib/libstd",
+                "${workspaceFolder}/lib/libruntime"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
