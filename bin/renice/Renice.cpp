@@ -12,11 +12,13 @@
 
 Renice::Renice(int argc, char **argv) : POSIXApplication(argc, argv)
 {
-    parser().setDescription("Change priority of a process");
-    parser().registerFlag('n', "priority:", "display priority level of processes when you do");
-    parser().registerPositional("Priority:", "Priority Level you want to change it to");
-    parser().registerPositional("PID", "Priority ID");
+    parser().setDescription("Change the priority level of a process");
+    parser().registerFlag('n', "priority:", "display priority level of process");
+    parser().registerPositional("Priority:", "Priority Level you want to change");
+    parser().registerPositional("PID", "processID");
 }
+
+Renice::~Renice(){}
 
 
 Renice::Result Renice::exec()

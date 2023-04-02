@@ -103,7 +103,7 @@ class Process
     ProcessID getParent() const;
 
     uint getPriority();
-    void setPriority(int p);
+    void setPriority(int priority_var);
     /**
      * Get Wait ID.
      */
