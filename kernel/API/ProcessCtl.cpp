@@ -48,6 +48,12 @@ API::Result ProcessCtlHandler(const ProcessID procID,
     // Handle request
     switch (action)
     {
+    case SetPriority:
+        if(procs->setPriority(procID, addr) == ProcessManager::Success){
+          return API::Success;
+        } else {
+          return API::InvalidArgument; 
+        }
     case Spawn:
         proc = procs->create(addr, map);
         if (!proc)
@@ -69,18 +75,6 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 
     case GetParent:
         return (API::Result) procs->current()->getParent();
-
-    case GetPriority:
-        return (API::Result) proc->getPriority();
-        
-    case SetPriority:
-        proc->setPriority(info->priorityLevel);
-        procs->redequeueProcess(proc);
-        procs->reenqueueProcess(proc);
-        procs->schedule();
-        break;
-
-    
 
     case Schedule:
         procs->schedule();
@@ -144,10 +138,10 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         break;
 
     case InfoPID:
+        info->priority = proc->getPriority();
         info->id    = proc->getID();
         info->state = proc->getState();
         info->parent = proc->getParent();
-        info->priorityLevel = proc->getPriority();
         break;
 
     case WaitPID:
@@ -199,12 +193,11 @@ Log & operator << (Log &log, ProcessOperation op)
 {
     switch (op)
     {
+        case SetPriority: log.append("SetPriority"); break; 
         case Spawn:     log.append("Spawn"); break;
         case KillPID:   log.append("KillPID"); break;
         case GetPID:    log.append("GetPID"); break;
         case GetParent: log.append("GetParent"); break;
-        case GetPriority: log.append("GetPriority"); break;
-        case SetPriority: log.append("SetPriority"); break;
         case WatchIRQ:  log.append("WatchIRQ"); break;
         case EnableIRQ: log.append("EnableIRQ"); break;
         case DisableIRQ:log.append("DisableIRQ"); break;
