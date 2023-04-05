@@ -48,12 +48,6 @@ API::Result ProcessCtlHandler(const ProcessID procID,
     // Handle request
     switch (action)
     {
-    case SetPriority:
-        if(procs->setPriority(procID, addr) == ProcessManager::Success){
-          return API::Success;
-        } else {
-          return API::InvalidArgument; 
-        }
     case Spawn:
         proc = procs->create(addr, map);
         if (!proc)
@@ -75,6 +69,9 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 
     case GetParent:
         return (API::Result) procs->current()->getParent();
+
+    case GetPriority:
+        return (API::Result) procs->current()->getPriority();
 
     case Schedule:
         procs->schedule();
@@ -138,10 +135,10 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         break;
 
     case InfoPID:
-        info->priority = proc->getPriority();
         info->id    = proc->getID();
         info->state = proc->getState();
         info->parent = proc->getParent();
+        info->priority = proc->getPriority();
         break;
 
     case WaitPID:
@@ -161,6 +158,12 @@ API::Result ProcessCtlHandler(const ProcessID procID,
         // Note that the API::Result is stored in the lower 16-bit of the
         // return value and the process exit status is stored in the upper 16 bits.
         return (API::Result) ((API::Success) | (procs->current()->getWaitResult() << 16));
+
+    // Sets priority to process ID
+    case RenicePID:
+        proc->setPriority(addr);
+        procs->schedule();
+        break;
 
     case InfoTimer:
         if (!(timer = Kernel::instance()->getTimer()))
@@ -193,16 +196,17 @@ Log & operator << (Log &log, ProcessOperation op)
 {
     switch (op)
     {
-        case SetPriority: log.append("SetPriority"); break; 
         case Spawn:     log.append("Spawn"); break;
         case KillPID:   log.append("KillPID"); break;
         case GetPID:    log.append("GetPID"); break;
         case GetParent: log.append("GetParent"); break;
+        case GetPriority: log.append("GetPriority"); break;
         case WatchIRQ:  log.append("WatchIRQ"); break;
         case EnableIRQ: log.append("EnableIRQ"); break;
         case DisableIRQ:log.append("DisableIRQ"); break;
         case InfoPID:   log.append("InfoPID"); break;
         case WaitPID:   log.append("WaitPID"); break;
+        case RenicePID: log.append("RenicePID"); break;
         case InfoTimer: log.append("InfoTimer"); break;
         case EnterSleep: log.append("EnterSleep"); break;
         case Schedule:  log.append("Schedule"); break;

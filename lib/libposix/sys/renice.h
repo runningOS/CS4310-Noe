@@ -15,36 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __LIBPOSIX_RENICEPID_H
-#define __LIBPOSIX_RENICEPID_H
+#ifndef __LIBPOSIX_RENICE_H
+#define __LIBPOSIX_RENICE_H
 
 #include <Macros.h>
 #include "types.h"
-#include <ProcessClient.h>
 
-/**
- * @addtogroup lib
- * @{
- *
- * @addtogroup libposix
- * @{
- */
+extern C pid_t renicepid(pid_t pid, int *stat_loc, int newPriority, int options);
 
-/**
- * Returns the exit status of the child process
- *
- * @param st Contains the stat_loc value from waitpid()
- *
- * @return Exit status of the child process
- */
-#define WEXITSTATUS(st) (st)
-
-
-extern C void renicepid(ProcessID PID, int priority, ProcessClient::Info info);
-
-/**
- * @}
- * @}
- */
-
-#endif /* __LIBPOSIX_WAIT_H */
+#endif /* __LIBPOSIX_RENICE_H */

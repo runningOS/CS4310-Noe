@@ -1,49 +1,62 @@
 
 //using simalar structure from wait and sleep cpp files 
 
-#include <Types.h>
-#include <Macros.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <unistd.h>
-#include <ProcessClient.h>
-#include "sys/renice.h"
 #include "Renice.h"
+#include "sys/renice.h"
+#include <ProcessClient.h>
 
-Renice::Renice(int argc, char **argv) : POSIXApplication(argc, argv)
+int newPriority;
+int processID;
+
+//constructor
+Renice::Renice(int argc, char** argv) : POSIXApplication(argc, argv)
 {
-    parser().setDescription("Change the priority level of a process");
-    parser().registerFlag('n', "priority:", "display priority level of process");
-    parser().registerPositional("Priority:", "Priority Level you want to change");
-    parser().registerPositional("PID", "processID");
+	parser().setDescription("Renice change process states");
+    parser().registerPositional("Priority", "Current priority of the process");
+	parser().registerPositional("PID", "The Process ID for the current process");
+	parser().registerFlag('n', "priority", "Parameter that sets a new priority to the process");
+    newPriority = atoi(argv[2]);
+    processID = atoi(argv[3]);
 }
 
-Renice::~Renice(){}
-
+Renice::~Renice()
+{
+	// destructor 
+}
 
 Renice::Result Renice::exec()
 {
-    int priority = 0;
-    int pid = 0;
-    ProcessID PID;
-    const ProcessClient process;
-    ProcessClient proc;
+    printf("\nProcess ID is: %d\n", processID);
+    printf("\nNew set Priority is: %d\n", newPriority);
+    bool result;
+    ProcessClient process;
 
-    priority = atoi(arguments().get("Priority"));
-    pid = atoi(arguments().get("PID"));
-    PID = pid;
-    ProcessClient::Info info;
-    const ProcessClient::Result result = process.processInfo(PID, info);
-
-    if (priority > 5 || priority < 1) 
-    {
-        ERROR("Invalid priority: " << arguments().get("Priority") << "'");
-        return InvalidArgument;
+    if (newPriority < 1 || newPriority > 5)
+	{
+        result = false;
+        printf("\nPriority value of %d is invalid. ", newPriority);
     }
-    else 
-    {
-        renicepid(PID, priority, info);
+
+    else
+	{
+        process.setPriority(processID, newPriority);
+        result = true;
+        printf("\nPriority value of %d is valid. ", newPriority);
     }
     
+    if (result == true)
+	{
+        printf("Process %d priority was changed.\n", processID);
+    }
+    else
+	{
+        printf("Process %d priority was NOT changed.\n", processID);
+    }
+
     return Success;
 }

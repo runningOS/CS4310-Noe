@@ -7,7 +7,6 @@
 #include "sys/renice.h"
 #include "sys/types.h"
 #include <errno.h>
-
 #include <POSIXApplication.h>
 
 /**
@@ -15,12 +14,12 @@
  * @{
  */
 
-/**
- * Output the system process list.
- */
+ /**
+  * Stop executing for some time.
+  */
 class Renice : public POSIXApplication
 {
-  public:
+public:
 
     /**
      * Constructor
@@ -28,7 +27,12 @@ class Renice : public POSIXApplication
      * @param argc Argument count
      * @param argv Argument values
      */
-    Renice(int argc, char **argv);
+    Renice(int argc, char** argv);
+
+    /**
+     * Destructor
+     */
+    virtual ~Renice();
 
     /**
      * Execute the application.
@@ -42,4 +46,4 @@ class Renice : public POSIXApplication
  * @}
  */
 
-#endif /* __BIN_PS_PROCESSLIST_H */
+#endif /* __BIN_RENICE_RENICE_H */

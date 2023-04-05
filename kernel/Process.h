@@ -71,6 +71,14 @@ class Process
         Stopped
     };
 
+
+    enum PriorityLevel
+    {
+        Min = 1,
+        Default = 3,
+        Max = 5
+    };
+
   public:
 
     /**
@@ -102,8 +110,6 @@ class Process
      */
     ProcessID getParent() const;
 
-    uint getPriority();
-    void setPriority(int priority_var);
     /**
      * Get Wait ID.
      */
@@ -113,6 +119,10 @@ class Process
      * Get wait result
      */
     uint getWaitResult() const;
+
+    PriorityLevel getPriority();
+
+    bool setPriority(int newPriority);
 
     /**
      * Get process shares.
@@ -254,15 +264,15 @@ class Process
     /** Current process status. */
     State m_state;
 
-    /** Current process level */
-    uint m_priorityLevel;
-
     /** Waits for exit of this Process. */
     ProcessID m_waitId;
 
     /** Wait exit result of the other Process. */
     uint m_waitResult;
 
+    
+    PriorityLevel m_priority;
+    
     /** Privilege level */
     bool m_privileged;
 
